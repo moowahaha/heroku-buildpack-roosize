@@ -26,7 +26,7 @@ fi
 
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
-cache_tempdir="$( mktemp -t libgd_cache )"
+cache_tempdir="$( mktemp -t libgd_cache_XXXX )"
 rm -rf $cache_tempdir
 mkdir -p $cache_tempdir
 
@@ -41,7 +41,7 @@ gd_package="gd-${libgd_version}"
 curl -O http://ring.nict.go.jp/archives/graphics/gd/${gd_package}.tar.gz
 
 tar -zxvf ${gd_package}.tar.gz
-pushd ${gd_package}
+cd ${gd_package}
 
 ./configure --prefix=${cache_tempdir}/${gd_package} && make install
 cd ${cache_tempdir}/${gd_package}

@@ -34,13 +34,13 @@ mkdir -p $cache_tempdir
 tempdir="$( mktemp -t node_XXXX )"
 rm -rf $tempdir
 mkdir -p $tempdir
-pushd $tempdir
+cd $tempdir
 
 # download and extract node
 curl http://nodejs.org/dist/node-v${node_version}.tar.gz -o node.tgz
 tar xzvf node.tgz
 
-pushd node-v${node_version}
+cd node-v${node_version}
 
 ./configure --prefix=${cache_tempdir}/node-v${node_version} && make install
 cd ${cache_tempdir}/node-v${node_version}
@@ -50,7 +50,7 @@ $basedir/aws/s3 put $S3_BUCKET \
   nodejs-${node_version}.tgz $cache_tempdir/node-${node_version}.tgz
 
 # go into scons
-pushd ${tempdir}/node-v${node_version}/tools/scons
+cd ${tempdir}/node-v${node_version}/tools/scons
 
 # package scons
 scons_version=$(ls | grep "scons-local" | cut -d- -f3)

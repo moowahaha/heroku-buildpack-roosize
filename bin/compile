@@ -46,7 +46,7 @@ LIBGD_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/gd-${LIBGD_VERSION}.tar.gz"
 VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
-VENDORED_LIBGD=${BUILD_DIR}/vendor
+VENDORED_LIBGD="$(mktmpdir libgd)"
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"

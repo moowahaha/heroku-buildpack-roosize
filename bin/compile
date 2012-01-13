@@ -64,6 +64,7 @@ cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
 # setting up paths for building
 PATH="$VENDORED_LIBGD:$VENDORED_SCONS:$VENDORED_NODE/bin:$PATH"
 INCLUDE_PATH="$VENDORED_LIBGD/include:$VENDORED_NODE/include"
+LIBPATH="$VENDORED_LIBGD/lib"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 

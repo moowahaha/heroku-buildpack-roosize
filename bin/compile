@@ -46,7 +46,7 @@ LIBGD_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/gd-${LIBGD_VERSION}.tar.gz"
 VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
-VENDORED_LIBGD="$(mktmpdir libgd)"
+VENDORED_LIBGD=${BUILD_DIR}/vendor
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"
@@ -64,9 +64,9 @@ cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
 # setting up paths for building
 PATH="$VENDORED_LIBGD:$VENDORED_SCONS:$VENDORED_NODE/bin:$PATH"
 INCLUDE_PATH="$VENDORED_LIBGD/include:$VENDORED_NODE/include"
-export LD_PRELOAD="$VENDORED_LIBGD/lib/libgd.so"
-export LD_LIBRARY_PATH="$VENDORED_LIBGD/lib"
-export LIBPATH="$VENDORED_LIBGD/lib"
+#export LD_PRELOAD="$VENDORED_LIBGD/lib/libgd.so"
+#export LD_LIBRARY_PATH="$VENDORED_LIBGD/lib"
+#export LIBPATH="$VENDORED_LIBGD/lib"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 

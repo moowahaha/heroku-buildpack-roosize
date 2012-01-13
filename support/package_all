@@ -1,5 +1,7 @@
 #!/bin/sh
 
+mkdir -p /tmp/release/
+
 ./support/package_libgd 2.0.36RC1
 ./support/package_node 0.4.7
 ./support/package_npm 1.0.94

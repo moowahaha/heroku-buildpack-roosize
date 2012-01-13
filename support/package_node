@@ -36,6 +36,8 @@ cd ${tempdir}/node-v${node_version}/tools/scons
 scons_version=$(ls | grep "scons-local" | cut -d- -f3)
 tar czvf $cache_tempdir/scons-${scons_version}.tgz *
 
+cp $cache_tempdir/scons-${scons_version}.tgz /tmp/release/
+
 # upload scons to s3
 $basedir/aws/s3 put $S3_BUCKET \
   scons-${scons_version}.tgz $cache_tempdir/scons-${scons_version}.tgz

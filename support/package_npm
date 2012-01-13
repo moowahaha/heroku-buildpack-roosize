@@ -25,6 +25,8 @@ git submodule update --init --recursive
 # package it up
 tar czvf $tempdir/npm-${npm_version}.tgz *
 
+cp $tempdir/npm-${npm_version}.tgz /tmp/release/
+
 # upload npm to s3
 $basedir/aws/s3 put $S3_BUCKET \
   npm-${npm_version}.tgz $tempdir/npm-${npm_version}.tgz

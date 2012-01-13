@@ -4,26 +4,6 @@ set -e
 
 libgd_version="$1"
 
-#if [ $libgd_version == "" ]; then
-#  echo "usage: $0 VERSION"
-#  exit 1
-#fi
-#
-#if [ "$AWS_ID" == "" ]; then
-#  echo "must set AWS_ID"
-#  exit 1
-#fi
-#
-#if [ "$AWS_SECRET" == "" ]; then
-#  echo "must set AWS_SECRET"
-#  exit 1
-#fi
-#
-#if [ "$S3_BUCKET" == "" ]; then
-#  echo "must set S3_BUCKET"
-#  exit 1
-#fi
-
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
 cache_tempdir="$( mktemp -t libgd_cache_XXXX )"
@@ -47,5 +27,5 @@ cd ${gd_package}
 cd ${cache_tempdir}/${gd_package}
 tar -zcvf ${cache_tempdir}/${gd_package}.tar.gz .
 
-$basedir/aws/s3 put $S3_BUCKET \
+$basedir/support/aws/s3 put $S3_BUCKET \
   ${gd_package}.tar.gz $cache_tempdir/$gd_package.tar.gz

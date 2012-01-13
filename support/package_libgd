@@ -1,0 +1,51 @@
+#!/bin/sh
+
+set -e
+
+libgd_version="$1"
+
+if [ "libgd_version" == "" ]; then
+  echo "usage: $0 VERSION"
+  exit 1
+fi
+
+if [ "$AWS_ID" == "" ]; then
+  echo "must set AWS_ID"
+  exit 1
+fi
+
+if [ "$AWS_SECRET" == "" ]; then
+  echo "must set AWS_SECRET"
+  exit 1
+fi
+
+if [ "$S3_BUCKET" == "" ]; then
+  echo "must set S3_BUCKET"
+  exit 1
+fi
+
+basedir="$( cd -P "$( dirname "$0" )" && pwd )"
+
+cache_tempdir="$( mktemp -t libgd_cache )"
+rm -rf $cache_tempdir
+mkdir -p $cache_tempdir
+
+tempdir="$( mktemp -t libgd_XXXX )"
+rm -rf $tempdir
+mkdir -p $tempdir
+cd $tempdir
+
+gd_package="gd-${libgd_version}"
+
+# download libgd
+curl -O http://ring.nict.go.jp/archives/graphics/gd/${gd_package}.tar.gz
+
+tar -zxvf ${gd_package}.tar.gz
+pushd ${gd_package}
+
+./configure --prefix=${cache_tempdir}/${gd_package} && make install
+cd ${cache_tempdir}/${gd_package}
+tar -zcvf ${cache_tempdir}/${gd_package}.tar.gz .
+
+$basedir/aws/s3 put $S3_BUCKET \
+  ${gd_package}.tar.gz $cache_tempdir/$gd_package.tar.gz

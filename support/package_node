@@ -27,6 +27,10 @@ fi
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
 # make a temp directory
+cache_tempdir="$( mktemp -t libgd_cache )"
+rm -rf $cache_tempdir
+mkdir -p $cache_tempdir
+
 tempdir="$( mktemp -t node_XXXX )"
 rm -rf $tempdir
 mkdir -p $tempdir
@@ -36,23 +40,22 @@ pushd $tempdir
 curl http://nodejs.org/dist/node-v${node_version}.tar.gz -o node.tgz
 tar xzvf node.tgz
 
-# go into node dir
 pushd node-v${node_version}
 
-# build and package nodejs for heroku
-vulcan build -v -o $tempdir/node-${node_version}.tgz
+./configure --prefix=${cache_tempdir}/node-v${node_version} && make install
+cd ${cache_tempdir}/node-v${node_version}
+tar -zcvf ${cache_tempdir}/node-${node_version}.tgz .
 
-# upload nodejs to s3
 $basedir/aws/s3 put $S3_BUCKET \
-  nodejs-${node_version}.tgz $tempdir/node-${node_version}.tgz
+  nodejs-${node_version}.tgz $cache_tempdir/node-${node_version}.tgz
 
 # go into scons
-pushd tools/scons
+pushd ${tempdir}/node-v${node_version}/tools/scons
 
 # package scons
 scons_version=$(ls | grep "scons-local" | cut -d- -f3)
-tar czvf $tempdir/scons-${scons_version}.tgz *
+tar czvf $cache_tempdir/scons-${scons_version}.tgz *
 
 # upload scons to s3
 $basedir/aws/s3 put $S3_BUCKET \
-  scons-${scons_version}.tgz $tempdir/scons-${scons_version}.tgz
+  scons-${scons_version}.tgz $cache_tempdir/scons-${scons_version}.tgz

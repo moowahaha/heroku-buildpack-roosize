@@ -27,7 +27,7 @@ NODE_VERSION="0.4.7"
 NPM_VERSION="1.0.94"
 SCONS_VERSION="1.2.0"
 LIBGD_VERSION="2.0.36RC1"
-S3_BUCKET="heroku-buildpack-nodejs"
+S3_BUCKET="heroku-buildpack-roosize"
 
 # parse and derive params
 BUILD_DIR=$1
@@ -40,7 +40,7 @@ CACHE_TARGET_DIR=$BUILD_DIR"/node_modules"
 NODE_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/nodejs-${NODE_VERSION}.tgz"
 NPM_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/npm-${NPM_VERSION}.tgz"
 SCONS_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/scons-${SCONS_VERSION}.tgz"
-LIBGD_PACKAGE="http://ring.nict.go.jp/archives/graphics/gd/gd-${LIBGD_VERSION}.tar.gz"
+LIBGD_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/gd-${LIBGD_VERSION}.tar.gz"
 
 # vendor directories
 VENDORED_NODE="$(mktmpdir node)"

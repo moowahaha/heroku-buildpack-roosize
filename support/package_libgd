@@ -27,5 +27,5 @@ cd ${gd_package}
 cd ${cache_tempdir}/${gd_package}
 tar -zcvf ${cache_tempdir}/${gd_package}.tar.gz .
 
-$basedir/support/aws/s3 put $S3_BUCKET \
+$basedir/aws/s3 put $S3_BUCKET \
   ${gd_package}.tar.gz $cache_tempdir/$gd_package.tar.gz

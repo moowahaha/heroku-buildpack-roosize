@@ -26,8 +26,7 @@ cd node-v${node_version}
 cd ${cache_tempdir}/node-v${node_version}
 tar -zcvf ${cache_tempdir}/node-${node_version}.tgz .
 
-$basedir/aws/s3 put $S3_BUCKET \
-  nodejs-${node_version}.tgz $cache_tempdir/node-${node_version}.tgz
+cp $cache_tempdir/node-${node_version}.tgz /tmp/release/
 
 # go into scons
 cd ${tempdir}/node-v${node_version}/tools/scons
@@ -39,5 +38,8 @@ tar czvf $cache_tempdir/scons-${scons_version}.tgz *
 cp $cache_tempdir/scons-${scons_version}.tgz /tmp/release/
 
 # upload scons to s3
+$basedir/aws/s3 put $S3_BUCKET \
+  nodejs-${node_version}.tgz $cache_tempdir/node-${node_version}.tgz
+
 $basedir/aws/s3 put $S3_BUCKET \
   scons-${scons_version}.tgz $cache_tempdir/scons-${scons_version}.tgz

@@ -32,8 +32,6 @@ S3_BUCKET="heroku-buildpack-roosize"
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
-echo "Build dir ${BUILD_DIR}"
-echo "Build dir ${CACHE_DIR}"
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 CACHE_STORE_DIR=$CACHE_DIR"/node_modules/$NPM_VERSION"
 CACHE_TARGET_DIR=$BUILD_DIR"/node_modules"
@@ -53,9 +51,9 @@ VENDORED_LIBGD="$(mktmpdir libgd)"
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"
 mkdir -p $VENDORED_NODE  && curl $NODE_PACKAGE -s -o -  | tar xzf - -C $VENDORED_NODE
+mkdir -p $VENDORED_LIBGD && curl $LIBGD_PACKAGE -s -o - | tar xzf - -C $VENDORED_LIBGD
 mkdir -p $VENDORED_NPM   && curl $NPM_PACKAGE -s -o -   | tar xzf - -C $VENDORED_NPM
 mkdir -p $VENDORED_SCONS && curl $SCONS_PACKAGE -s -o - | tar xzf - -C $VENDORED_SCONS
-mkdir -p $VENDORED_LIBGD && curl $LIBGD_PACKAGE -s -o - | tar xzf - -C $VENDORED_LIBGD
 
 # vendor node into the slug
 PATH="$BUILD_DIR/bin:$PATH"
@@ -65,7 +63,7 @@ cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
 
 # setting up paths for building
 PATH="$VENDORED_LIBGD:$VENDORED_SCONS:$VENDORED_NODE/bin:$PATH"
-INCLUDE_PATH="$VENDORED_NODE/include"
+INCLUDE_PATH="$VENDORED_LIBGD/include:$VENDORED_NODE/include"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 

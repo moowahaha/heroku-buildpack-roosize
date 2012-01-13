@@ -7,7 +7,7 @@ node_version="$1"
 basedir="$( cd -P "$( dirname "$0" )" && pwd )"
 
 # make a temp directory
-cache_tempdir="$( mktemp -t libgd_cache )"
+cache_tempdir="$( mktemp -t node_XXXX )"
 rm -rf $cache_tempdir
 mkdir -p $cache_tempdir
 
@@ -26,7 +26,7 @@ cd node-v${node_version}
 cd ${cache_tempdir}/node-v${node_version}
 tar -zcvf ${cache_tempdir}/node-${node_version}.tgz .
 
-cp $cache_tempdir/node-${node_version}.tgz /tmp/release/
+cp $cache_tempdir/node-${node_version}.tgz /tmp/release/nodejs-${node_version}.tgz
 
 # go into scons
 cd ${tempdir}/node-v${node_version}/tools/scons

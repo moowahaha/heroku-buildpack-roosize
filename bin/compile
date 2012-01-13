@@ -32,6 +32,8 @@ S3_BUCKET="heroku-buildpack-roosize"
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
+echo "Build dir ${BUILD_DIR}"
+echo "Build dir ${CACHE_DIR}"
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 CACHE_STORE_DIR=$CACHE_DIR"/node_modules/$NPM_VERSION"
 CACHE_TARGET_DIR=$BUILD_DIR"/node_modules"

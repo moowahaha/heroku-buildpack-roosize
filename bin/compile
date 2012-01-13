@@ -30,8 +30,8 @@ LIBGD_VERSION="2.0.36RC1"
 S3_BUCKET="heroku-buildpack-roosize"
 
 # parse and derive params
-BUILD_DIR=$1
-CACHE_DIR=$2
+BUILD_DIR=/tmp/build
+CACHE_DIR=/tmp/cache
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 CACHE_STORE_DIR=$CACHE_DIR"/node_modules/$NPM_VERSION"
 CACHE_TARGET_DIR=$BUILD_DIR"/node_modules"
@@ -64,7 +64,7 @@ cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
 # setting up paths for building
 PATH="$VENDORED_LIBGD:$VENDORED_SCONS:$VENDORED_NODE/bin:$PATH"
 INCLUDE_PATH="$VENDORED_LIBGD/include:$VENDORED_NODE/include"
-LIBPATH="$VENDORED_LIBGD/lib"
+LD_LIBRARY_PATH="$VENDORED_LIBGD/lib"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 

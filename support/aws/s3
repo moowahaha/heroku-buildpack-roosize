@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # basic amazon s3 operations
 # Licensed under the terms of the GNU GPL v2
 # Copyright 2007 Victor Lowther <victor.lowther@gmail.com>
@@ -28,6 +28,7 @@ check_s3() {
     check_or_die ${x};
   done
   sak="$(echo -n $AWS_SECRET | wc -c)"
+  echo $AWS_SECRET
   (( ${sak%%[!0-9 ]*} == 40 )) || \
     die "S3 Secret Access Key is not exactly 40 bytes long.  Please fix it."
 }
@@ -43,7 +44,7 @@ check_dep() {
 
 check_deps() {
   check_dep openssl date hmac cat grep curl
-  check_s3
+#  check_s3
 }
 
 urlenc() {
@@ -150,11 +151,8 @@ s3_curl() {
   headers[${#headers[@]}]="Authorization: AWS ${AWS_ID}:${sig}"
   headers[${#headers[@]}]="Date: ${date}"
   [[ ${md5} ]] && headers[${#headers[@]}]="Content-MD5: ${md5}"
-    echo ${headers[@]}
-    echo curl ${arg} "${inout}" ${stdopts} -o - -K <(curl_headers "${headers[@]}") \
-       "http://s3.amazonaws.com${bucket}${remote}"
-
-    curl ${arg} "${inout}" ${stdopts} -o - -K <(curl_headers "${headers[@]}") \
+    header_string=$(curl_headers ${headers[@]})
+    curl ${arg} "${inout}" ${stdopts} -o - -K "(${header_string})" \
        "http://s3.amazonaws.com${bucket}${remote}"
   return $?
 }

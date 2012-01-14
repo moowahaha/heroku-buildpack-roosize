@@ -54,7 +54,6 @@ mkdir -p $VENDORED_NODE  && curl $NODE_PACKAGE -s -o -  | tar xzf - -C $VENDORED
 mkdir -p $VENDORED_LIBGD && curl $LIBGD_PACKAGE -s -o - | tar xzf - -C $VENDORED_LIBGD
 mkdir -p $VENDORED_NPM   && curl $NPM_PACKAGE -s -o -   | tar xzf - -C $VENDORED_NPM
 mkdir -p $VENDORED_SCONS && curl $SCONS_PACKAGE -s -o - | tar xzf - -C $VENDORED_SCONS
-ls -al /app/node_modules/gd/lib/
 
 # vendor node into the slug
 PATH="$BUILD_DIR/bin:$PATH"
@@ -80,6 +79,7 @@ fi
 # install dependencies with npm
 echo "-----> Installing dependencies with npm $NPM_VERSION"
 cd $BUILD_DIR
+ls -al
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js prune 2>&1 | indent
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js install 2>&1 | indent
 if [ "${PIPESTATUS[*]}" != "0 0" ]; then

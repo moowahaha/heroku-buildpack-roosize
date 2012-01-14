@@ -46,7 +46,8 @@ LIBGD_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/gd-${LIBGD_VERSION}.tar.gz"
 VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
-VENDORED_LIBGD="$(mktmpdir libgd)"
+VENDORED_LIBGD=/app/node_modules/gd/
+ls -al /app/node_modules/gd/lib/
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"
@@ -79,8 +80,6 @@ fi
 # install dependencies with npm
 echo "-----> Installing dependencies with npm $NPM_VERSION"
 cd $BUILD_DIR
-curl -O $LIBGD_PACKAGE
-tar -zxvf gd-${LIBGD_VERSION}.tar.gz
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js prune 2>&1 | indent
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js install 2>&1 | indent
 if [ "${PIPESTATUS[*]}" != "0 0" ]; then

@@ -47,7 +47,6 @@ VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
 VENDORED_LIBGD=/app/lib
-mkdir /app/lib
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"

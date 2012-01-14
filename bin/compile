@@ -46,7 +46,7 @@ LIBGD_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/gd-${LIBGD_VERSION}.tar.gz"
 VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
-VENDORED_LIBGD=/app/node_modules/gd/
+VENDORED_LIBGD="$(mktmpdir libgd)"
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"
@@ -64,9 +64,9 @@ cp "$VENDORED_NODE/bin/node" "$BUILD_DIR/bin/node"
 # setting up paths for building
 PATH="$VENDORED_LIBGD:$VENDORED_SCONS:$VENDORED_NODE/bin:$PATH"
 INCLUDE_PATH="$VENDORED_LIBGD/include:$VENDORED_NODE/include"
-#export LD_PRELOAD="$VENDORED_LIBGD/lib/libgd.so"
-#export LD_LIBRARY_PATH="$VENDORED_LIBGD/lib"
-#export LIBPATH="$VENDORED_LIBGD/lib"
+export LD_PRELOAD="$VENDORED_LIBGD/lib/libgd.so"
+export LD_LIBRARY_PATH="$VENDORED_LIBGD/lib"
+export LIBPATH="$VENDORED_LIBGD/lib"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 
@@ -79,7 +79,6 @@ fi
 # install dependencies with npm
 echo "-----> Installing dependencies with npm $NPM_VERSION"
 cd $BUILD_DIR
-ls -al
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js prune 2>&1 | indent
 HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NPM/cli.js install 2>&1 | indent
 if [ "${PIPESTATUS[*]}" != "0 0" ]; then

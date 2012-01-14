@@ -47,7 +47,6 @@ VENDORED_NODE="$(mktmpdir node)"
 VENDORED_NPM="$(mktmpdir npm)"
 VENDORED_SCONS="$(mktmpdir scons)"
 VENDORED_LIBGD=/app/node_modules/gd/
-ls -al /app/node_modules/gd/lib/
 
 # download and unpack packages
 echo "-----> Fetching Node.js binaries"
@@ -55,6 +54,7 @@ mkdir -p $VENDORED_NODE  && curl $NODE_PACKAGE -s -o -  | tar xzf - -C $VENDORED
 mkdir -p $VENDORED_LIBGD && curl $LIBGD_PACKAGE -s -o - | tar xzf - -C $VENDORED_LIBGD
 mkdir -p $VENDORED_NPM   && curl $NPM_PACKAGE -s -o -   | tar xzf - -C $VENDORED_NPM
 mkdir -p $VENDORED_SCONS && curl $SCONS_PACKAGE -s -o - | tar xzf - -C $VENDORED_SCONS
+ls -al /app/node_modules/gd/lib/
 
 # vendor node into the slug
 PATH="$BUILD_DIR/bin:$PATH"
